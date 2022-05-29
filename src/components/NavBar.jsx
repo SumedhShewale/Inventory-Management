@@ -8,7 +8,7 @@ function NavBar(props) {
   let types = useSelector(selectObjectsTypes);
 
   const [selectedHeader, setSelectedHeader] = useState(
-    window.location.pathname || "/"
+    window.location.pathname || "/all"
   );
 
   const handleChange = (event, newValue) => {
@@ -30,7 +30,7 @@ function NavBar(props) {
         {types.map((typeData) => {
           return (
             <Tab
-              label={typeData.type}
+              label={typeData.title}
               value={"/" + typeData.type}
               component={Link}
               to={"/" + typeData.type}

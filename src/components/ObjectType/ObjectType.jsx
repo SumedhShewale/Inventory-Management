@@ -19,7 +19,8 @@ import NavBar from "../NavBar";
 import ObjectFields from "./ObjectFields";
 
 function ObjectType(props) {
-  let objects = useSelector(selectObjects);
+  let objects, unfilteredObjects;
+  objects = unfilteredObjects = useSelector(selectObjects);
   objects = props.type
     ? objects.filter((object) => object.type === props.type)
     : objects;
@@ -36,10 +37,17 @@ function ObjectType(props) {
 
     return [
       {
+        id: Math.random().toString(),
         type: objectType,
         ...labels,
       },
     ];
+  };
+
+  const handleDeleteType = (id) => {
+    let objectsCopy = [...unfilteredObjects];
+    objectsCopy = objectsCopy.filter((object) => object.id !== id);
+    dispatch(addition([...objectsCopy]));
   };
 
   return (
@@ -49,9 +57,13 @@ function ObjectType(props) {
         {objects.map((data, index) => {
           return (
             <ObjectFields
-              key={index}
+              key={data.id}
+              id={data.id}
+              index={index}
+              data={data}
               labels={Object.keys(data)}
               values={Object.values(data)}
+              handleDeleteType={handleDeleteType}
             />
           );
         })}
@@ -61,20 +73,7 @@ function ObjectType(props) {
               size="small"
               variant="contained"
               color="primary"
-              onClick={() =>
-                dispatch(
-                  addObject([
-                    {
-                      type: props.type,
-                      Name: "",
-                      Title: "",
-                      Grade: "",
-                      "Bar Length": "",
-                      Date: "",
-                    },
-                  ])
-                )
-              }
+              onClick={(e) => dispatch(addObject(getTypeData(props.type)))}
             >
               Add Item
             </Button>

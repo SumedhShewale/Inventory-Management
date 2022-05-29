@@ -12,8 +12,8 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<NavBar />} />
-        <Route path="all" element={<ObjectType />} />
+        <Route path="/" element={<ObjectType key={"all"} />} />
+        <Route path="all" element={<ObjectType key={"all"} />} />
         {types.map((typeData) => {
           return (
             <Route
