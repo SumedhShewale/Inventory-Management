@@ -26,11 +26,6 @@ function ObjectType(props) {
 
   let types = useSelector(selectObjectsTypes);
   const dispatch = useDispatch();
-  // let chainSawObjects = [
-  //   { Name: "", Title: "", Grade: "asdas", "Bar Length": "12", Date: "" },
-  //   { Name: "", Title: "", Grade: "asdas", "Bar Length": "12", Date: "" },
-  //   { Name: "", Title: "", Grade: "asdas", "Bar Length": "12", Date: "" },
-  // ];
 
   const getTypeData = (objectType) => {
     let currentType = types.find((typeData) => typeData.type === objectType);

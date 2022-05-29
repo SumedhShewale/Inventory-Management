@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { Paper, Tabs, Tab } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectObjectsTypes } from "../features/counter/counterSlice";
 
 function NavBar(props) {
+  let types = useSelector(selectObjectsTypes);
+
   const [selectedHeader, setSelectedHeader] = useState(
     window.location.pathname || "/"
   );
@@ -19,35 +23,23 @@ function NavBar(props) {
         indicatorColor="primary"
         textColor="primary"
         variant="scrollable"
-        // centered
         scrollButtons
         allowScrollButtonsMobile
       >
-        <Tab
-          label="All"
-          value="/all"
-          // disabled={props.header === "/"}
-          component={Link}
-          to="/all"
-        />
-        <Tab
-          label="BullDozers"
-          value="/bullDozers"
-          // disabled={props.header === "/aboutUs"}
-          component={Link}
-          to="/bullDozers"
-        />
-        <Tab
-          label="Chainsaws"
-          value="/chainsaws"
-          // disabled={props.header === "/gallery"}
-          component={Link}
-          to="/chainsaws"
-        />
+        <Tab label="All" value="/all" component={Link} to="/all" />
+        {types.map((typeData) => {
+          return (
+            <Tab
+              label={typeData.type}
+              value={"/" + typeData.type}
+              component={Link}
+              to={"/" + typeData.type}
+            />
+          );
+        })}
         <Tab
           label="Manage Types"
           value="/manageTypes"
-          // disabled={props.header === "/gallery"}
           component={Link}
           to="/manageTypes"
         />

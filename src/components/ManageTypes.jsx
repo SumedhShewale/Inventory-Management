@@ -17,31 +17,7 @@ import TypeComponent from "./TypeComponent";
 
 function ManageTypes(props) {
   let types = useSelector(selectObjectsTypes);
-  // types = props.type
-  //   ? objects.filter((object) => object.type === props.type)
-  //   : objects;
   const dispatch = useDispatch();
-  /////  STATE
-  // let types = [
-  //   {
-  //     title: "Bull Dozer",
-  //     type: "ASdas",
-  //     fields: [
-  //       { type: "Text", label: "Name" },
-  //       { type: "Number", label: "Quantity" },
-  //       { type: "Text", label: "Brand" },
-  //     ],
-  //   },
-  //   {
-  //     title: "ZXC",
-  //     type: "ZXCZXC",
-  //     fields: [
-  //       { type: "Text", label: "Name" },
-  //       { type: "Number", label: "Quantity" },
-  //       { type: "Date", label: "Date" },
-  //     ],
-  //   },
-  // ];
 
   const getTypes = () => {
     return types.map((data, index) => {
