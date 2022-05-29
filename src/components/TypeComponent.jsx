@@ -27,9 +27,18 @@ function TypeComponent(props) {
   const handleEditField = (e, index, fieldOf) => {
     let value = e.target.value;
     let typeCopy = { ...types[props.index] };
-    let fieldCopy = { ...typeCopy["fields"][index] };
-    fieldCopy[fieldOf] = value;
-    typeCopy["fields"][index] = fieldCopy;
+    if (!isNaN(index)) {
+      let fieldCopy = { ...typeCopy["fields"][index] };
+      fieldCopy[fieldOf] = value;
+      let fields = [...typeCopy["fields"]];
+      fields[index] = {
+        ...typeCopy["fields"][index],
+        ...fieldCopy,
+      };
+      typeCopy["fields"] = [...fields];
+    } else {
+      typeCopy[fieldOf] = value;
+    }
     dispatch(editObjectType(typeCopy, props.index));
   };
 
@@ -43,24 +52,20 @@ function TypeComponent(props) {
       style={{ border: "1px solid black", margin: "10px" }}
     >
       <Grid item xs={12}>
-        <Typography variant="body2">{"Object Type"}</Typography>
-      </Grid>
-      <Grid item xs={12}>
         <TextField
+          label="Object Type"
           defaultValue={props.data.type}
           onChange={(e) => {
-            handleEditField(e);
+            handleEditField(e, undefined, "type");
           }}
         ></TextField>
       </Grid>
       <Grid item xs={12}>
-        <Typography variant="body2">{"Object Title"}</Typography>
-      </Grid>
-      <Grid item xs={12}>
         <TextField
+          label="Object Title"
           defaultValue={props.data.title}
           onChange={(e) => {
-            handleEditField(e);
+            handleEditField(e, undefined, "title");
           }}
         ></TextField>
       </Grid>

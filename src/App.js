@@ -11,8 +11,14 @@ export default function App() {
       <Routes>
         <Route path="/" element={<NavBar />} />
         <Route path="all" element={<ObjectType />} />
-        <Route path="bullDozers" element={<ObjectType type={"bullDozers"} />} />
-        <Route path="chainsaws" element={<ObjectType type={"chainsaws"} />} />
+        <Route
+          path="bullDozers"
+          element={<ObjectType key={"bullDozers"} type={"bullDozers"} />}
+        />
+        <Route
+          path="chainsaws"
+          element={<ObjectType key={"chainsaws"} type={"chainsaws"} />}
+        />
         <Route path="manageTypes" element={<ManageTypes />} />
       </Routes>
     </BrowserRouter>

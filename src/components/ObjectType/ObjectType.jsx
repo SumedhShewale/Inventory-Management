@@ -51,9 +51,10 @@ function ObjectType(props) {
     <>
       <NavBar />
       <Grid container spacing={2} style={{ padding: "20px" }}>
-        {objects.map((data) => {
+        {objects.map((data, index) => {
           return (
             <ObjectFields
+              key={index}
               labels={Object.keys(data)}
               values={Object.values(data)}
             />
