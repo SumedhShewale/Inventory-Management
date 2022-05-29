@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addition,
   additionType,
-  addObjectType,
   editObjectType,
   selectObjects,
   selectObjectsTypes,

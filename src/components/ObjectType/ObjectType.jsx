@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addition,
   addObject,
-  addObjectType,
+  editObject,
   selectObjects,
   selectObjectsTypes,
 } from "../../features/counter/counterSlice";
@@ -44,6 +44,20 @@ function ObjectType(props) {
     ];
   };
 
+  const handleEditField = (value, fieldOf, id) => {
+    if (fieldOf === "Date") {
+      let date = new Date(value).getDate();
+      let month = new Date(value).getMonth() + 1;
+      let year = new Date(value).getFullYear();
+      value = date + "-" + month + "-" + year;
+    }
+    let currentObject;
+    let unfilteredObjectsCopy = [...unfilteredObjects];
+    currentObject = unfilteredObjectsCopy.find((ele) => ele.id === id);
+    currentObject[fieldOf] = value;
+    dispatch(editObject(currentObject, props.index));
+  };
+
   const handleDeleteType = (id) => {
     let objectsCopy = [...unfilteredObjects];
     objectsCopy = objectsCopy.filter((object) => object.id !== id);
@@ -64,6 +78,9 @@ function ObjectType(props) {
               labels={Object.keys(data)}
               values={Object.values(data)}
               handleDeleteType={handleDeleteType}
+              handleEditField={handleEditField}
+              unfilteredObjects={unfilteredObjects}
+              types={types}
             />
           );
         })}

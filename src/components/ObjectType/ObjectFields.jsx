@@ -1,7 +1,15 @@
 import React from "react";
 import { Button, Grid, TextField, Typography } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 function ObjectFields(props) {
+  const getDate = (value) => {
+    let splits = value.split("-");
+    return new Date(splits[2], splits[1], splits[0]);
+  };
+
   const getField = () => {
     return (
       <Grid
@@ -28,19 +36,52 @@ function ObjectFields(props) {
           </Button>
         </Grid>
         {props.labels.map((label, index) => {
-          return (
-            label !== "id" && (
-              <Grid item xs={12}>
+          let fieldType;
+          if (label !== "id" && label !== "type") {
+            fieldType = props.types.find(
+              (typeData) => typeData.type === props.data.type
+            );
+            fieldType = fieldType.fields.find((field) => field.label === label);
+          }
+          return label !== "id" && label !== "type" && fieldType ? (
+            <Grid item xs={12}>
+              {fieldType.type === "Number" ? (
                 <TextField
                   label={label}
+                  type="number"
                   defaultValue={props.values[index]}
-                  // onChange={(e) => {
-                  //   handleEditField(e, undefined, "type");
-                  // }}
+                  onChange={(e) => {
+                    props.handleEditField(e.target.value, label, props.data.id);
+                  }}
                 />
-              </Grid>
-            )
-          );
+              ) : fieldType.type === "Date" ? (
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DatePicker
+                    label={label}
+                    value={getDate(props.values[index])}
+                    onChange={(newValue) => {
+                      props.handleEditField(newValue, label, props.data.id);
+                    }}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+              ) : (
+                fieldType.type === "Text" && (
+                  <TextField
+                    label={label}
+                    defaultValue={props.values[index]}
+                    onChange={(e) => {
+                      props.handleEditField(
+                        e.target.value,
+                        label,
+                        props.data.id
+                      );
+                    }}
+                  />
+                )
+              )}
+            </Grid>
+          ) : null;
         })}
       </Grid>
     );
