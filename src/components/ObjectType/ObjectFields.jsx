@@ -16,7 +16,10 @@ function ObjectFields(props) {
         {props.labels.map((label, index) => {
           return (
             <Grid item xs={12}>
-              <TextField label={label} value={props.values[index]}></TextField>
+              <TextField
+                label={label}
+                defaultValue={props.values[index]}
+              ></TextField>
             </Grid>
           );
         })}

@@ -2,7 +2,60 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { fetchCount } from "./counterAPI";
 
 const initialState = {
-  value: 0,
+  value: [
+    {
+      type: "bullDozers",
+      Name: "",
+      Title: "",
+      Grade: "asdas",
+      "Bar Length": "12",
+      Date: "",
+    },
+    {
+      type: "chainsaws",
+      Name: "",
+      Title: "",
+      Grade: "asdas",
+      "Bar Length": "12",
+      Date: "",
+    },
+    {
+      type: "bullDozers",
+      Name: "",
+      Title: "",
+      Grade: "asdas",
+      "Bar Length": "10",
+      Date: "",
+    },
+    {
+      type: "chainsaws",
+      Name: "",
+      Title: "",
+      Grade: "asdas",
+      "Bar Length": "12",
+      Date: "",
+    },
+  ],
+  objectTypes: [
+    {
+      title: "Bull Dozer",
+      type: "bullDozers",
+      fields: [
+        { type: "Text", label: "Name" },
+        { type: "Number", label: "Quantity" },
+        { type: "Text", label: "Brand" },
+      ],
+    },
+    {
+      title: "Chainsaws",
+      type: "chainsaws",
+      fields: [
+        { type: "Text", label: "Name" },
+        { type: "Number", label: "Quantity" },
+        { type: "Date", label: "Date" },
+      ],
+    },
+  ],
   status: "idle",
 };
 
@@ -21,7 +74,7 @@ export const incrementAsync = createAsyncThunk(
 );
 
 export const counterSlice = createSlice({
-  name: "counter",
+  name: "objects",
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
@@ -30,14 +83,17 @@ export const counterSlice = createSlice({
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-      state.value += 1;
+      state.value = { ...state.value, ...state.value };
     },
     decrement: (state) => {
       state.value -= 1;
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
-    incrementByAmount: (state, action) => {
-      state.value += action.payload;
+    addition: (state, action) => {
+      state.value = [...action.payload];
+    },
+    additionType: (state, action) => {
+      state.objectTypes = [...action.payload];
     },
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -54,20 +110,42 @@ export const counterSlice = createSlice({
   },
 });
 
-export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+export const { increment, decrement, addition, additionType } =
+  counterSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
-export const selectCount = (state) => state?.counter?.value || 0;
+export const selectObjects = (state) => {
+  return state.counter.value;
+};
+
+export const selectObjectsTypes = (state) => {
+  return state.counter.objectTypes;
+};
 
 // We can also write thunks by hand, which may contain both sync and async logic.
 // Here's an example of conditionally dispatching actions based on current state.
-export const incrementIfOdd = (amount) => (dispatch, getState) => {
-  const currentValue = selectCount(getState());
-  if (currentValue % 2 === 1) {
-    dispatch(incrementByAmount(amount));
-  }
+export const addObject = (data) => (dispatch, getState) => {
+  let currentState = selectObjects(getState());
+  dispatch(addition([...currentState, ...data]));
+};
+
+export const editObject = (data, index) => (dispatch, getState) => {
+  let currentState = [...selectObjects(getState())];
+  currentState[index] = { ...currentState[index], ...data };
+  dispatch(addition([...currentState]));
+};
+
+export const addObjectType = (data) => (dispatch, getState) => {
+  let currentState = selectObjectsTypes(getState());
+  dispatch(additionType([...currentState, ...data]));
+};
+
+export const editObjectType = (data, index) => (dispatch, getState) => {
+  let currentState = [...selectObjectsTypes(getState())];
+  currentState[index] = { ...currentState[index], ...data };
+  dispatch(additionType([...currentState]));
 };
 
 export default counterSlice.reducer;

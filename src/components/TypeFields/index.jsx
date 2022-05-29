@@ -1,5 +1,12 @@
 import React from "react";
-import { Grid, MenuItem, Select, TextField } from "@mui/material";
+import {
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import "./style.css";
 
 function TypeFields(props) {
@@ -17,12 +24,32 @@ function TypeFields(props) {
     return (
       <Grid item container xs={12}>
         <Grid item xs={6}>
-          <TextField label="Label" value={props.fieldData.label}></TextField>
+          <TextField
+            label="Label"
+            defaultValue={props.fieldData.label}
+            onChange={(e) => {
+              props.handleEditField(e, props.index, "label");
+            }}
+          ></TextField>
         </Grid>
         <Grid item xs={6}>
-          <Select label="Type" value={props.fieldData.type}>
-            {getFieldTypes()}
-          </Select>
+          <FormControl
+            fullWidth
+            variant="outlined"
+            style={{ minWidth: "120px" }}
+          >
+            <InputLabel id="Type">Type</InputLabel>
+            <Select
+              labelId="Type"
+              label="Type"
+              defaultValue={props.fieldData.type}
+              onChange={(e) => {
+                props.handleEditField(e, props.index, "type");
+              }}
+            >
+              {getFieldTypes()}
+            </Select>
+          </FormControl>
         </Grid>
       </Grid>
     );
