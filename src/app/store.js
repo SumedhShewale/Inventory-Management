@@ -1,5 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
+import counterReducer from "../features/counter/counterSlice";
+import storage from "redux-persist/lib/storage";
+import logger from "redux-logger";
 import {
   persistStore,
   persistReducer,
@@ -10,9 +13,6 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-
-import counterReducer from "../features/counter/counterSlice";
-import storage from "redux-persist/lib/storage";
 
 const persistConfig = {
   key: "root",
@@ -30,7 +30,7 @@ const getPersistorStore = () => {
         serializableCheck: {
           ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
         },
-      }),
+      }).concat(logger),
   });
   let persistor = persistStore(store);
   return { store, persistor };
